@@ -1,0 +1,223 @@
+/* National Parks Data Lab - Styles
+   Sharp-Contrast Flat Design System
+   ============================================================ */
+
+/* ============================================================
+   Reset
+   ============================================================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================================
+   Root Variables
+   ============================================================ */
+:root {
+  --color-primary:      #2d6a4f;   /* forest green */
+  --color-primary-dark: #1b4332;   /* deep forest */
+  --color-accent:       #e9c46a;   /* golden wheat */
+  --color-background:   #fefae0;   /* warm parchment */
+  --color-surface:      #ffffff;
+  --color-text:         #1a1a1a;
+  --color-text-light:   #5a5a5a;
+  --color-border:       #d4c89a;
+  --color-undefined:    #e63946;
+  --font-body: system-ui, -apple-system, sans-serif;
+  --font-mono: "Courier New", Courier, monospace;
+  --radius: 4px;
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ============================================================
+   Header
+   ============================================================ */
+.site-header {
+  background-color: var(--color-primary-dark);
+  color: #ffffff;
+  padding: 24px 40px;
+  border-bottom: 4px solid var(--color-accent);
+}
+
+.site-header h1 {
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  font-weight: 800;
+}
+
+.site-header p {
+  margin-top: 4px;
+  color: var(--color-accent);
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+
+/* ============================================================
+   Layout
+   ============================================================ */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+/* ============================================================
+   Instructions Banner
+   ============================================================ */
+.instructions-banner {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  padding: 16px 24px;
+  border-radius: var(--radius);
+  margin-bottom: 32px;
+  border-left: 6px solid var(--color-accent);
+}
+
+.instructions-banner h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--color-accent);
+  letter-spacing: 0.5px;
+}
+
+.instructions-banner p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.instructions-banner code {
+  background-color: var(--color-primary-dark);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+}
+
+/* ============================================================
+   Output Area
+   ============================================================ */
+#output {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ============================================================
+   Section Headers
+   ============================================================ */
+.section-header {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 10px 0 8px 0;
+  border-bottom: 3px solid var(--color-primary);
+  margin-top: 16px;
+}
+
+/* ============================================================
+   Result Cards
+   ============================================================ */
+.result-card {
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.result-card:hover {
+  border-color: var(--color-primary);
+}
+
+.result-label {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.result-value {
+  padding: 16px;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  white-space: pre-wrap;
+  word-break: break-word;
+  background-color: #f9f6ed;
+}
+
+.result-value.result-undefined {
+  color: var(--color-undefined);
+}
+
+.result-empty {
+  padding: 16px;
+  color: var(--color-text-light);
+  font-style: italic;
+  font-size: 0.875rem;
+}
+
+/* ============================================================
+   Table Cards
+   ============================================================ */
+.result-card-table {
+  overflow-x: auto;
+}
+
+.result-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.result-table thead {
+  background-color: var(--color-primary-dark);
+  color: #ffffff;
+}
+
+.result-table th {
+  padding: 10px 16px;
+  text-align: left;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.result-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.result-table tbody tr:nth-child(even) {
+  background-color: #f9f6ed;
+}
+
+.result-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.result-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.result-table tbody tr:hover {
+  background-color: #f0ead0;
+}
