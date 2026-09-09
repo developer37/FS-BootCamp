@@ -2,7 +2,7 @@
 // Run with: node script.js
 //
 // This is the reference implementation.
-// Story: "The Missing Ingredient" - a cooking competition.
+// Story: "A passenger who realizes they are on the wrong flight" .
 
 // -------------------------------------------------------
 // STORY DATA
