@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StockTracker Pro</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <!-- Top bar shows the app title and the live portfolio summary. -->
+      <header class="topbar">
+        <div class="brand-block">
+          <div class="brand-mark" aria-hidden="true">
+            <span></span>
+          </div>
+          <div>
+            <p class="eyebrow">Portfolio dashboard</p>
+            <h1>StockTracker Pro</h1>
+          </div>
+        </div>
+
+        <div class="topbar-metrics">
+          <div class="metric">
+            <span>Portfolio Value</span>
+            <strong id="portfolio-value">$0.00</strong>
+          </div>
+          <div class="metric">
+            <span>Stocks Owned</span>
+            <strong id="stocks-owned">0</strong>
+          </div>
+        </div>
+      </header>
+
+      <main class="content-grid">
+        <section class="panel search-panel" aria-labelledby="search-title">
+          <div class="section-header compact">
+            <div>
+              <p class="section-kicker">Search</p>
+              <h2 id="search-title">Find a stock</h2>
+            </div>
+            <button type="button" class="ghost-button" id="refresh-watchlist">Refresh Prices</button>
+          </div>
+
+          <form id="search-form" class="search-form" autocomplete="off">
+            <label class="sr-only" for="search-input">Search for a stock symbol or company name</label>
+            <div class="search-field">
+              <span class="search-icon" aria-hidden="true">⌕</span>
+              <input
+                id="search-input"
+                name="search"
+                type="text"
+                inputmode="search"
+                placeholder="Enter stock symbol or company name (e.g., AAPL, Apple, Microsoft)"
+              />
+            </div>
+            <button type="submit" class="primary-button">Search Stock</button>
+          </form>
+
+          <div class="quick-search" aria-label="Quick search stocks">
+            <span>Quick Search:</span>
+            <div id="quick-search-buttons" class="chip-row"></div>
+          </div>
+
+          <div id="status-message" class="status-message" aria-live="polite"></div>
+          <div id="loading-state" class="loading-state hidden" aria-live="polite">
+            <div class="spinner" aria-hidden="true"></div>
+            <span>Loading stock data...</span>
+          </div>
+          <div id="search-matches" class="match-list hidden" aria-live="polite"></div>
+        </section>
+
+        <!-- The stock details panel is filled after a quote is selected. -->
+        <section id="stock-details" class="panel stock-panel hidden" aria-labelledby="details-title">
+          <div class="section-header">
+            <div>
+              <p class="section-kicker">Current quote</p>
+              <h2 id="details-title">Stock Details</h2>
+            </div>
+            <button type="button" class="ghost-button" id="watchlist-toggle">Add to Watchlist</button>
+          </div>
+
+          <div class="stock-hero">
+            <div>
+              <p id="stock-symbol" class="stock-symbol">AAPL</p>
+              <h3 id="stock-name">Apple Inc.</h3>
+            </div>
+            <div class="price-block">
+              <p id="stock-price" class="stock-price">$0.00</p>
+              <p id="stock-change" class="stock-change neutral">$0.00 (0.00%)</p>
+            </div>
+          </div>
+
+          <div class="detail-grid">
+            <article class="info-card">
+              <span>Open</span>
+              <strong id="stock-open">$0.00</strong>
+            </article>
+            <article class="info-card">
+              <span>High</span>
+              <strong id="stock-high">$0.00</strong>
+            </article>
+            <article class="info-card">
+              <span>Low</span>
+              <strong id="stock-low">$0.00</strong>
+            </article>
+            <article class="info-card">
+              <span>Volume</span>
+              <strong id="stock-volume">0</strong>
+            </article>
+          </div>
+
+          <div class="shares-row">
+            <div>
+              <p class="section-kicker">Portfolio tracking</p>
+              <h3>Shares owned</h3>
+            </div>
+            <div class="shares-controls">
+              <label class="sr-only" for="shares-input">Number of shares owned</label>
+              <input id="shares-input" type="number" min="0" step="1" placeholder="0" />
+              <button type="button" id="save-shares" class="primary-button">Update Shares</button>
+            </div>
+          </div>
+
+          <div class="position-summary">
+            <div>
+              <span>Position Value</span>
+              <strong id="position-value">$0.00</strong>
+            </div>
+            <div>
+              <span>Shares Held</span>
+              <strong id="shares-held">0</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- Watchlist and summary sections persist user selections across refreshes. -->
+        <section class="panel watchlist-panel" aria-labelledby="watchlist-title">
+          <div class="section-header">
+            <div>
+              <p class="section-kicker">Watchlist</p>
+              <h2 id="watchlist-title">Your Watchlist</h2>
+            </div>
+          </div>
+          <div id="watchlist-empty" class="empty-state">
+            <div class="empty-icon" aria-hidden="true">↗</div>
+            <h3>Your watchlist is empty</h3>
+            <p>Search for stocks and add them to track their performance.</p>
+          </div>
+          <div id="watchlist-list" class="watchlist-list"></div>
+        </section>
+
+        <section class="panel summary-panel" aria-labelledby="summary-title">
+          <div class="section-header">
+            <div>
+              <p class="section-kicker">Portfolio summary</p>
+              <h2 id="summary-title">Track performance at a glance</h2>
+            </div>
+            <button type="button" class="ghost-button reset-button" id="reset-portfolio">
+              Portfolio Reset
+            </button>
+          </div>
+
+          <div class="summary-grid">
+            <article class="summary-card">
+              <span>Total Portfolio Value</span>
+              <strong id="summary-total">$0.00</strong>
+            </article>
+            <article class="summary-card">
+              <span>Number of Positions</span>
+              <strong id="summary-positions">0</strong>
+            </article>
+            <article class="summary-card">
+              <span>Top Performing Stock</span>
+              <strong id="summary-top">-</strong>
+            </article>
+            <article class="summary-card">
+              <span>Today&apos;s Change</span>
+              <strong id="summary-change" class="neutral">$0.00</strong>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

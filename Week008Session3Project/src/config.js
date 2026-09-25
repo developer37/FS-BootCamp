@@ -1,0 +1,4 @@
+export default {
+  ALPHA_VANTAGE_API_KEY: "",
+  TWELVE_DATA_API_KEY: "",
+};

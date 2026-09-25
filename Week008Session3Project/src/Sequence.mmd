@@ -1,0 +1,84 @@
+sequenceDiagram
+	autonumber
+	actor User
+	participant UI as StockTracker UI
+	participant App as app.js
+	participant Config as config.js
+	participant AV as Alpha Vantage API
+	participant TD as Twelve Data API
+	participant LS as localStorage
+
+	User->>UI: Enter company name or symbol
+	UI->>App: submit search query
+	App->>App: validate input
+
+	alt Query looks like a symbol
+		App->>Config: read API key
+		App->>AV: GET GLOBAL_QUOTE?symbol=SYMBOL&apikey=...
+		alt Alpha Vantage returns a valid quote
+			AV-->>App: quote payload
+			App->>App: normalize quote data
+			App->>UI: render stock details
+			App->>LS: save quote cache
+		else Alpha Vantage limit reached or fails
+			App->>TD: GET time_series?symbol=SYMBOL&interval=1min&apikey=...
+			alt Twelve Data returns a valid quote
+				TD-->>App: time series payload
+				App->>App: normalize Twelve Data quote data
+				App->>UI: render stock details
+				App->>LS: save quote cache
+			else Both live quote services fail
+				App->>App: use local fallback quote
+				App->>UI: render stock details
+				App->>LS: save quote cache
+			end
+		end
+	else Query looks like a company name
+		App->>Config: read API key
+		App->>AV: GET SYMBOL_SEARCH?keywords=NAME&apikey=...
+		AV-->>App: matching symbols
+		App->>UI: render selectable matches
+		User->>UI: choose symbol
+		UI->>App: lookup selected symbol
+		App->>Config: read API key
+		App->>AV: GET GLOBAL_QUOTE?symbol=SYMBOL&apikey=...
+		alt Alpha Vantage returns a valid quote
+			AV-->>App: quote payload
+			App->>App: normalize quote data
+			App->>UI: render stock details
+			App->>LS: save quote cache
+		else Alpha Vantage limit reached or fails
+			App->>TD: GET time_series?symbol=SYMBOL&interval=1min&apikey=...
+			alt Twelve Data returns a valid quote
+				TD-->>App: time series payload
+				App->>App: normalize Twelve Data quote data
+				App->>UI: render stock details
+				App->>LS: save quote cache
+			else Both live quote services fail
+				App->>App: use local fallback quote
+				App->>UI: render stock details
+				App->>LS: save quote cache
+			end
+		end
+	end
+
+	opt Update shares owned
+		User->>UI: enter share count
+		UI->>App: save shares
+		App->>LS: persist portfolio shares
+		App->>UI: refresh position value and totals
+	end
+
+	opt Portfolio reset
+		User->>UI: click Portfolio Reset
+		UI->>App: reset portfolio
+		App->>LS: remove portfolio key
+		App->>UI: reload page
+	end
+
+	opt Add or remove watchlist item
+		User->>UI: toggle watchlist button
+		UI->>App: update watchlist
+		App->>LS: persist watchlist symbols
+		App->>UI: refresh watchlist and summary
+	end
