@@ -1,0 +1,45 @@
+sequenceDiagram
+    actor User
+    participant Browser
+    participant App
+    participant AddTodo
+    participant TodoList
+    participant TodoItem
+    participant Button
+    participant LocalStorage
+
+    User->>Browser: Open the Todo app
+    Browser->>App: Mount React component
+    App->>LocalStorage: Read saved todos
+    LocalStorage-->>App: Return saved list or empty array
+    App->>TodoList: Pass todos, onToggle, and onDelete
+    TodoList->>TodoItem: Render each todo item
+    TodoItem->>Button: Render Add/Delete button styling
+
+    User->>AddTodo: Enter a new task
+    User->>AddTodo: Submit the form
+    AddTodo->>App: onSubmit(event)
+    App->>App: Trim input and validate
+
+    alt Input is valid
+        App->>App: Create new todo object
+        App->>App: Update todos state
+        App->>LocalStorage: Save updated list
+        App->>TodoList: Re-render with new task
+        TodoList->>TodoItem: Display newly added item
+    else Input is empty or too short
+        App-->>AddTodo: Set error message
+        AddTodo-->>User: Show validation feedback
+    end
+
+    User->>TodoItem: Click checkbox
+    TodoItem->>App: onToggle(todo.id)
+    App->>App: Toggle completed status
+    App->>LocalStorage: Save updated list
+    App->>TodoList: Re-render with updated status
+
+    User->>Button: Click delete action
+    Button->>App: onDelete(todo.id)
+    App->>App: Remove matching todo from state
+    App->>LocalStorage: Save updated list
+    App->>TodoList: Re-render without deleted item

@@ -1,0 +1,198 @@
+/* Base reset and layout for the overall app shell. */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #80a723 0%, #53730a 100%);
+  min-height: 100vh;
+  color: #2d3748;
+}
+
+#root {
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+header h1 {
+  color: #ffffff;
+  font-size: 3rem;
+  margin: 0;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+main {
+  max-width: 680px;
+  margin: 0 auto;
+  background: rgba(97, 209, 234, 0.95);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+/* Styling for the add-todo form area. */
+.todo-input-section {
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.todo-form .input-group {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+#todo-input {
+  flex: 1;
+  padding: 16px 20px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #2d3748;
+}
+
+#todo-input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.add-btn {
+  padding: 16px 32px;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Validation message styling. */
+.error-message {
+  color: #b91c1c;
+  font-size: 14px;
+  min-height: 20px;
+  opacity: 0;
+}
+
+.error-message.show {
+  opacity: 1;
+}
+
+.todo-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px 8px;
+  background: #f8fafc;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.todo-list-section {
+  background: #f8fafc;
+}
+
+.todo-list {
+  list-style: none;
+  padding: 8px 24px 24px;
+  margin: 0;
+  min-height: 180px;
+}
+
+/* Each todo item is presented as a card-style row with a checkbox and action area. */
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  margin: 10px 0;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.todo-item.completed {
+  opacity: 0.7;
+  background: #f1f5f9;
+}
+
+.todo-item.completed .todo-text {
+  text-decoration: line-through;
+  color: #94a3b8;
+}
+
+.todo-checkbox {
+  width: 22px;
+  height: 22px;
+  accent-color: #6366f1;
+}
+
+.todo-text {
+  flex: 1;
+  font-size: 1rem;
+  color: #334155;
+  word-break: break-word;
+}
+
+.todo-actions {
+  display: flex;
+  align-items: center;
+}
+
+.delete-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.empty-state {
+  text-align: center;
+  color: #64748b;
+  font-style: italic;
+  padding: 40px 20px;
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 10px;
+  }
+
+  header h1 {
+    font-size: 2rem;
+  }
+
+  .todo-input-section {
+    padding: 24px 20px;
+  }
+
+  .todo-form .input-group {
+    flex-direction: column;
+  }
+
+  .todo-controls {
+    padding: 20px 20px 8px;
+  }
+
+  .todo-list {
+    padding: 8px 12px 20px;
+  }
+
+  .todo-item {
+    padding: 14px 12px;
+    gap: 10px;
+  }
+}
