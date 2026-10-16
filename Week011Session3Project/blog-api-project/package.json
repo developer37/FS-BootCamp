@@ -1,0 +1,24 @@
+{
+  "name": "blog-api-project",
+  "version": "1.0.0",
+  "description": "Blog-Post-API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "node scripts/run-api-tests.js",
+    "test:postman": "newman run Blog-Post-API.postman_collection.json --reporters cli,json --reporter-json-export test-results.json",
+    "test:postman:silent": "newman run Blog-Post-API.postman_collection.json --reporters cli,json --reporter-cli-silent --reporter-json-export test-results.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "newman": "^4.6.1",
+    "nodemon": "^1.14.10"
+  }
+}

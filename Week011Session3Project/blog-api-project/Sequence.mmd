@@ -1,0 +1,88 @@
+sequenceDiagram
+    autonumber
+    actor Client
+    participant App as app.js
+    participant MW as Express Middleware
+    participant Router as routes/posts.js or routes/users.js
+    participant Controller as controllers/*.js
+    participant Store as In-Memory Data Store
+    participant Error as middleware/errorHandler.js
+
+    Note over App: Server starts with app.listen(PORT)
+    App->>App: Load Express app
+    App->>MW: Add express.json() and request logger
+    App->>Router: Register /api/posts and /api/users routes
+    App->>App: Define / and /health endpoints
+    App-->>Client: Server listening on port 3000
+
+    Client->>App: GET /health
+    App->>MW: Request enters middleware
+    MW-->>App: Continue to route handling
+    App-->>Client: HTTP 200 + { status: "UP" }
+
+    Client->>App: POST /api/posts
+    App->>MW: Parse JSON body
+    MW-->>App: Continue
+    App->>Router: Match /api/posts route
+    Router->>Controller: createPost(req, res)
+    Controller->>Controller: Validate title, content, author
+    alt Valid payload
+        Controller->>Store: Add new post object
+        Store-->>Controller: Post stored successfully
+        Controller-->>Client: HTTP 201 + created post
+    else Invalid payload
+        Controller-->>Client: HTTP 400 + validation error
+    end
+
+    Client->>App: GET /api/posts/:id
+    App->>Router: Match post route
+    Router->>Controller: getPostById(req, res)
+    Controller->>Store: Find post by id
+    Store-->>Controller: Post data or not found
+    alt Post exists
+        Controller-->>Client: HTTP 200 + post JSON
+    else Not found
+        Controller-->>Client: HTTP 404 + error message
+    end
+
+    Client->>App: PUT /api/posts/:id
+    App->>Router: Match update route
+    Router->>Controller: updatePost(req, res)
+    Controller->>Controller: Validate incoming fields
+    Controller->>Store: Update matching post
+    Store-->>Controller: Updated post
+    Controller-->>Client: HTTP 200 + updated post
+
+    Client->>App: DELETE /api/posts/:id
+    App->>Router: Match delete route
+    Router->>Controller: deletePost(req, res)
+    Controller->>Store: Remove matching post
+    Store-->>Controller: Deleted post
+    Controller-->>Client: HTTP 200 + delete confirmation
+
+    Client->>App: POST /api/users
+    App->>Router: Match /api/users route
+    Router->>Controller: createUser(req, res)
+    Controller->>Controller: Validate name/email/role
+    alt Valid payload
+        Controller->>Store: Add new user
+        Store-->>Controller: User stored successfully
+        Controller-->>Client: HTTP 201 + created user
+    else Invalid payload
+        Controller-->>Client: HTTP 400 + validation error
+    end
+
+    Client->>App: GET /api/users/:id
+    App->>Router: Match user route
+    Router->>Controller: getUserById(req, res)
+    Controller->>Store: Find user by id
+    Store-->>Controller: User data or not found
+    Controller-->>Client: HTTP 200 or 404 response
+
+    Note over App,Error: Any unhandled exception or thrown error is sent to the centralized error middleware
+    App->>Error: err, req, res, next
+    Error-->>Client: Standardized JSON error response
+
+    Client->>App: GET /unknown-route
+    App->>App: Route not found middleware
+    App-->>Client: HTTP 404 + available routes
