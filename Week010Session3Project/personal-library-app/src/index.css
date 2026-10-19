@@ -1,0 +1,44 @@
+/* Global typography and base text color. */
+:root {
+  font-family: "Trebuchet MS", "Gill Sans", sans-serif;
+  line-height: 1.45;
+  font-weight: 400;
+  color: #0f2d3d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  /* Layered gradients create a subtle paper-like backdrop. */
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(242, 229, 197, 0.8),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 80% 0%,
+      rgba(166, 207, 221, 0.7),
+      transparent 35%
+    ),
+    linear-gradient(160deg, #ecf3f5, #e3efea 45%, #f3efe4);
+}
+
+h1,
+h2,
+h3 {
+  color: #17394d;
+}
+
+p {
+  margin: 0.35rem 0;
+}
+
+a {
+  /* Keep links readable against the light background. */
+  color: #205270;
+}

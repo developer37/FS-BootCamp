@@ -1,0 +1,262 @@
+/* Main app shell and top header layout */
+.app-shell {
+  width: min(1160px, 92vw);
+  margin: 2rem auto;
+}
+
+.site-header {
+  background: linear-gradient(120deg, #1f3b50, #2f5f6f);
+  color: #f8f4e9;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 12px 26px rgba(20, 40, 53, 0.2);
+}
+
+.site-header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.9rem;
+  min-height: 4.5rem;
+}
+
+.site-header-copy {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 0.05rem;
+}
+
+.site-header-icon-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 0.9rem;
+  background: rgba(9, 44, 32, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  margin-top: 0.05rem;
+}
+
+.site-header h1 {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+}
+
+.site-header p {
+  margin: 0.5rem 0 1rem;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.site-header-icon {
+  width: 2.6rem;
+  height: 2.6rem;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+  filter: none;
+  opacity: 1;
+}
+
+.main-nav {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.main-nav a {
+  color: #f8f4e9;
+  text-decoration: none;
+  border: 1px solid rgba(248, 244, 233, 0.45);
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+}
+
+.main-nav a.active {
+  background: #f8f4e9;
+  color: #163242;
+}
+
+main {
+  margin-top: 1.2rem;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(14, 35, 48, 0.15);
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 10px 22px rgba(22, 50, 66, 0.08);
+}
+
+/* Shared form, control, and button styling */
+.filters,
+.search-form,
+.action-row,
+.detail-controls {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.filters label,
+.search-form label,
+.edit-form label,
+.detail-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-weight: 600;
+  color: #24495f;
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}
+
+input,
+select,
+textarea {
+  border: 1px solid #95a7b0;
+  border-radius: 0.5rem;
+  padding: 0.45rem 0.6rem;
+  background: #fffdf8;
+}
+
+button {
+  border: 0;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: #28556e;
+  color: #f5f0e4;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.danger {
+  background: #ad3d35;
+}
+
+.checkbox-label {
+  flex-direction: row;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+/* Card and grid layouts for library/search results */
+.library-grid,
+.search-grid {
+  display: grid;
+  gap: 0.95rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.library-item,
+.search-card {
+  border: 1px solid rgba(24, 60, 77, 0.2);
+  border-radius: 0.85rem;
+  overflow: hidden;
+  background: #fffcf2;
+}
+
+.library-item {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+}
+
+.search-card {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+}
+
+.cover,
+.search-card img,
+.detail-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.item-content,
+.search-card div {
+  padding: 0.75rem;
+}
+
+.item-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.item-head h3,
+.search-card h3 {
+  margin: 0;
+}
+
+.edit-form {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1rem;
+}
+
+.detail-cover {
+  max-height: 460px;
+  border-radius: 0.75rem;
+}
+
+/* Status and helper text colors */
+.error {
+  color: #8f231f;
+  font-weight: 700;
+}
+
+.notice {
+  color: #1d5f2f;
+  font-weight: 700;
+}
+
+.empty-state {
+  color: #35566a;
+  font-style: italic;
+}
+
+/* Responsive collapse for narrow screens */
+@media (max-width: 780px) {
+  .app-shell {
+    width: 96vw;
+    margin: 1rem auto;
+  }
+
+  .library-item,
+  .search-card,
+  .detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .cover,
+  .search-card img,
+  .detail-cover {
+    max-height: 300px;
+  }
+}
