@@ -1,0 +1,61 @@
+sequenceDiagram
+    autonumber
+    actor User as "Client Browser/Postman"
+    participant API as "Express API server.js"
+    participant DBConf as "DB Config config/database.js"
+    participant ORM as "Sequelize ORM"
+    participant PG as "PostgreSQL"
+    participant SearchRoute as "Search Route routes/search.js"
+    participant MusicAPI as "iTunes Helper config/music.js"
+    participant ITunes as "iTunes Search API"
+    participant FavRoute as "Favorites Route routes/favorites.js"
+    participant FavModel as "Favorite Model models/Favorite.js"
+
+    Note over API,PG: Startup flow
+    API->>DBConf: Load env and create Sequelize instance
+    API->>DBConf: connectDatabase()
+    DBConf->>ORM: sequelize.authenticate()
+    ORM->>PG: Open database connection
+    PG-->>ORM: Connection OK
+    ORM-->>DBConf: Auth success
+    DBConf-->>API: Connected
+    API->>ORM: sequelize.sync alter true
+    ORM->>PG: Sync model and table schema
+    PG-->>ORM: Sync complete
+    ORM-->>API: Ready
+    API-->>User: Server listening on PORT
+
+    Note over User,ITunes: Search flow
+    User->>API: GET /api/search q=term
+    API->>SearchRoute: Route request
+    SearchRoute->>MusicAPI: searchTracks term
+    MusicAPI->>ITunes: GET /search term media music limit 10
+    ITunes-->>MusicAPI: Raw track results
+    MusicAPI-->>SearchRoute: Simplified tracks
+    SearchRoute-->>API: query count tracks
+    API-->>User: 200 JSON response
+
+    Note over User,PG: Favorites create flow
+    User->>API: POST /api/favorites with track payload
+    API->>FavRoute: Route request
+    FavRoute->>FavRoute: Validate required fields
+    FavRoute->>FavModel: findOne by trackId
+    FavModel->>ORM: Query duplicate
+    ORM->>PG: Select by trackId
+    PG-->>ORM: Existing or none
+    ORM-->>FavModel: Query result
+    alt Duplicate found
+        FavModel-->>FavRoute: Existing row
+        FavRoute-->>API: 400 Track already in favorites
+        API-->>User: 400 JSON error
+    else Not duplicate
+        FavModel-->>FavRoute: No existing row
+        FavRoute->>FavModel: create payload
+        FavModel->>ORM: Insert row
+        ORM->>PG: Insert into favorites
+        PG-->>ORM: Inserted row
+        ORM-->>FavModel: Created favorite
+        FavModel-->>FavRoute: Created favorite
+        FavRoute-->>API: 201 favorite JSON
+        API-->>User: 201 JSON response
+    end
