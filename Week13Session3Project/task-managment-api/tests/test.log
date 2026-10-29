@@ -1,0 +1,170 @@
+PS C:\DATA\CodeCademy\WALTERM\Week13Session3Project\task-managment-api> npm run test
+
+> task-managment-api@1.0.0 test
+> mocha "tests/**/*.js" --reporter spec
+
+◇ injected env (2) from .env
+◇ injected env (0) from .env
+
+
+  Task Management API
+
+Seeding starter data...
+  Created 2 roles: admin, author
+  Created 2 users: admin, alice
+  Created 2 sample tasks
+Seed complete.
+
+    ✔ GET /roles returns the seeded roles and permissions
+
+Seeding starter data...
+  Created 2 roles: admin, author
+  Created 2 users: admin, alice
+  Created 2 sample tasks
+Seed complete.
+
+    ✔ registers a user and allows login with the generated token (124ms)
+
+Seeding starter data...
+  Created 2 roles: admin, author
+  Created 2 users: admin, alice
+  Created 2 sample tasks
+Seed complete.
+
+    ✔ returns the authenticated users profile from /api/auth/me
+
+Seeding starter data...
+  Created 2 roles: admin, author
+  Created 2 users: admin, alice
+  Created 2 sample tasks
+Seed complete.
+
+    ✔ allows an author to create tasks and prevents other users from editing someone else's task
+
+  database configuration
+Connected to PostgreSQL database successfully.
+Database schema synced successfully.
+Database smoke test passed. Tables: [ 'tasks', 'favorites', 'roles', 'users' ]
+    ✔ connects and creates the expected tables when DATABASE_URL is configured (3088ms)
+
+
+  5 passing (13s)
+
+PS C:\DATA\CodeCademy\WALTERM\Week13Session3Project\task-managment-api> npm run test:postman
+
+> task-managment-api@1.0.0 test:postman
+> node scripts/run-postman.js
+
+(node:16168) [DEP0176] DeprecationWarning: fs.F_OK is deprecated, use fs.constants.F_OK instead
+(Use `node --trace-deprecation ...` to show where the warning was created)
+◇ injected env (3) from .env
+◇ injected env (0) from .env
+Connected to PostgreSQL database successfully.
+Database schema synced successfully.
+Using PostgreSQL-backed storage configured via DATABASE_URL.
+
+Seeding starter data...
+  Created 2 roles: admin, author
+  Created 2 users: admin, alice
+  Created 2 sample tasks
+Seed complete.
+
+
+Task Management API
+==========================
+Server running on http://localhost:3001
+
+Endpoints:
+  GET    /api/tasks
+  GET    /api/admin/tasks
+  GET    /api/admin/users
+  GET    /api/auth/me
+  GET    /api/roles
+  GET    /api/auth/profile
+  GET    /api/tasks?status=todo&priority=high&sortBy=dueDate&order=asc&search=task
+  POST   /api/auth/register
+  POST   /api/auth/login
+  POST   /api/tasks
+  PUT    /api/tasks/:taskId
+  DELETE /api/tasks/:taskId
+  DELETE /api/admin/users/:userId
+
+==========================
+
+newman
+
+Task Management API
+
+→ Root - API Info
+  GET http://localhost:3001/ [200 OK, 1.28kB, 31ms]
+
+→ Roles - List Roles
+  GET http://localhost:3001/roles [200 OK, 1.16kB, 3ms]
+
+→ Auth - Register User
+  POST http://localhost:3001/api/auth/register [201 Created, 1.23kB, 64ms]
+
+→ Auth - Login as Admin
+  POST http://localhost:3001/api/auth/login [200 OK, 1.15kB, 56ms]
+
+→ Auth - Login as Alice
+  POST http://localhost:3001/api/auth/login [200 OK, 1.15kB, 58ms]
+
+→ Auth - Get Current User
+  GET http://localhost:3001/api/auth/me [200 OK, 863B, 3ms]
+
+→ Auth - Get All Users (Admin)
+  GET http://localhost:3001/api/auth/users [200 OK, 1.14kB, 2ms]
+
+→ Get My Tasks
+  GET http://localhost:3001/api/tasks [200 OK, 1.16kB, 2ms]
+
+→ Get Tasks - Filtered Search
+  GET http://localhost:3001/api/tasks?status=todo&priority=high&sortBy=dueDate&order=asc&search=task [200 OK, 846B, 2ms]
+
+→ Create Task
+  POST http://localhost:3001/api/tasks [201 Created, 1.05kB, 2ms]
+
+→ Get Task by ID
+  GET http://localhost:3001/api/tasks/3 [200 OK, 1.01kB, 2ms]
+
+→ Update Task
+  PUT http://localhost:3001/api/tasks/3 [200 OK, 1.07kB, 3ms]
+
+→ Delete Task
+  DELETE http://localhost:3001/api/tasks/3 [200 OK, 767B, 2ms]
+
+→ Admin - View All Tasks
+  GET http://localhost:3001/api/admin/tasks [200 OK, 1.48kB, 2ms]
+
+→ Admin - View All Users
+  GET http://localhost:3001/api/admin/users [200 OK, 1.14kB, 2ms]
+
+→ Admin - Delete User
+  DELETE http://localhost:3001/api/admin/users/3 [200 OK, 957B, 2ms]
+
+→ Profile - Get My Profile
+  GET http://localhost:3001/api/auth/profile [200 OK, 1kB, 2ms]
+
+┌─────────────────────────┬──────────────────┬──────────────────┐
+│                         │         executed │           failed │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              iterations │                1 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│                requests │               17 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│            test-scripts │                4 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│      prerequest-scripts │                0 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              assertions │                0 │                0 │
+├─────────────────────────┴──────────────────┴──────────────────┤
+│ total run duration: 1658ms                                    │
+├───────────────────────────────────────────────────────────────┤
+│ total data received: 6.04kB (approx)                          │
+├───────────────────────────────────────────────────────────────┤
+│ average response time: 14ms [min: 2ms, max: 64ms, s.d.: 22ms] │
+└───────────────────────────────────────────────────────────────┘
+
+Postman collection passed successfully.
+PS C:\DATA\CodeCademy\WALTERM\Week13Session3Project\task-managment-api> 

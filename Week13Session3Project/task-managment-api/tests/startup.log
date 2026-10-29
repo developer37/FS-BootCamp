@@ -1,0 +1,38 @@
+PS C:\DATA\CodeCademy\WALTERM\Week13Session3Project\task-managment-api> npm run start
+
+> task-managment-api@1.0.0 start
+> node server.js
+
+◇ injected env (3) from .env
+◇ injected env (0) from .env
+Connected to PostgreSQL database successfully.
+Database schema synced successfully.
+Using PostgreSQL-backed storage configured via DATABASE_URL.
+
+Seeding starter data...
+  Created 2 roles: admin, author
+  Created 2 users: admin, alice
+  Created 2 sample tasks
+Seed complete.
+
+
+Task Management API
+==========================
+Server running on http://localhost:3001
+
+Endpoints:
+  GET    /api/tasks
+  GET    /api/admin/tasks
+  GET    /api/admin/users
+  GET    /api/auth/me
+  GET    /api/roles
+  GET    /api/auth/profile
+  GET    /api/tasks?status=todo&priority=high&sortBy=dueDate&order=asc&search=task
+  POST   /api/auth/register
+  POST   /api/auth/login
+  POST   /api/tasks
+  PUT    /api/tasks/:taskId
+  DELETE /api/tasks/:taskId
+  DELETE /api/admin/users/:userId
+
+==========================

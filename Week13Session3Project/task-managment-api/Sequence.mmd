@@ -1,0 +1,63 @@
+sequenceDiagram
+    actor Client
+    participant Server as server.js
+    participant Middleware as global middleware
+    participant Router as route handlers
+    participant Controller as auth/task/user controllers
+    participant Model as Sequelize models / in-memory models
+    participant Data as PostgreSQL or In-Memory store
+    participant Seed as seedData.js
+    participant Error as errorHandler.js
+
+    Note over Server,Seed: Application startup
+    Server->>Server: Load .env + config
+    Server->>Data: Initialize database connection if DATABASE_URL exists
+    alt DB configured
+        Data-->>Server: PostgreSQL connection successful
+        Server->>Model: Sync schema and load models
+        Server->>Seed: Run seed routine
+        Seed->>Model: findOrCreate roles, users, tasks
+        Model->>Data: Insert or reuse records
+    else No DB / invalid config
+        Server->>Data: Use in-memory fallback store
+        Server->>Seed: Run fallback seed routine
+        Seed->>Data: Populate starter arrays
+    end
+
+    Note over Client,Error: Incoming HTTP request flow
+    Client->>Server: HTTP request
+    Server->>Middleware: Apply Helmet security headers, CORS, JSON parsing, and rate limiting
+    Middleware->>Middleware: Validate request + JWT if protected route
+    alt Token valid
+        Middleware-->>Server: Attach authenticated user payload
+    else Token invalid or missing
+        Middleware->>Error: Generate 401 / 403 response
+        Error-->>Client: Error JSON response
+    end
+
+    Server->>Router: Match URL and HTTP method
+    Router->>Controller: Call controller function
+
+    alt Requires admin or role check
+        Controller->>Middleware: authorize admin role
+        Middleware->>Model: Validate user role
+        Model-->>Middleware: Role info
+        Middleware-->>Controller: Allow or deny
+    end
+
+    Controller->>Model: Read/write task/user/role records
+    alt Database mode
+        Model->>Data: Query PostgreSQL tables
+    else In-memory mode
+        Model->>Data: Read/write arrays
+    end
+    Data-->>Model: Result set / records
+    Model-->>Controller: Normalized model result
+
+    alt Success path
+        Controller-->>Server: JSON payload
+        Server-->>Client: HTTP 200/201/204 response
+    else Error path
+        Controller->>Error: Pass error details
+        Error-->>Client: Structured error message
+    end
