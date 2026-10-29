@@ -6,17 +6,17 @@ const helmet = require("helmet");
 const dotenv = require("dotenv");
 const rateLimit = require("express-rate-limit");
 
-dotenv.config();
+require("dotenv").config();
 
 // Import routes
-const authRoutes = require('./routes/authRoutes');
-const taskRoutes = require('./routes/taskRoutes');
-const userRoutes = require('./routes/userRoutes');
-const adminRoutes = require('./routes/adminRoutes');
-const roleRoutes = require('./routes/roleRoutes');
-const { notFoundHandler, errorHandler } = require('./middleware/errorHandler');
-const { connectDatabase, syncDatabase } = require('./config/database');
-const seedDatabase = require('./seeds/seedData');
+const authRoutes = require("./routes/authRoutes");
+const taskRoutes = require("./routes/taskRoutes");
+const userRoutes = require("./routes/userRoutes");
+const adminRoutes = require("./routes/adminRoutes");
+const roleRoutes = require("./routes/roleRoutes");
+const { notFoundHandler, errorHandler } = require("./middleware/errorHandler");
+const { connectDatabase, syncDatabase } = require("./config/database");
+const seedDatabase = require("./seeds/seedData");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -27,24 +27,28 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(helmet({
-  contentSecurityPolicy: false,
-  crossOriginEmbedderPolicy: false,
-  crossOriginResourcePolicy: { policy: "cross-origin" }
-}));
-app.use(rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-}));
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  }),
+);
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+  }),
+);
 
 // Register routes
 app.use("/api/auth", authRoutes);
 app.use("/api/auth", userRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/admin", adminRoutes);
-app.use('/', roleRoutes);   // Role listing
+app.use("/", roleRoutes); // Role listing
 
 app.get("/", (req, res) => {
   res.json({
@@ -61,8 +65,9 @@ app.get("/", (req, res) => {
       delete: "DELETE /api/tasks/:taskId",
       allTasks: "GET /api/admin/tasks",
       allUsers: "GET /api/admin/users",
-      search: "GET /api/tasks?status=todo&priority=high&sortBy=dueDate&order=asc&search=task",
-      deleteUser: "DELETE /api/admin/users/:userId"
+      search:
+        "GET /api/tasks?status=todo&priority=high&sortBy=dueDate&order=asc&search=task",
+      deleteUser: "DELETE /api/admin/users/:userId",
     },
   });
 });
@@ -75,9 +80,11 @@ async function startServer() {
   const databaseSynced = databaseConnected ? await syncDatabase() : false;
 
   if (databaseConnected && databaseSynced) {
-    console.log('Using PostgreSQL-backed storage configured via DATABASE_URL.');
+    console.log("Using PostgreSQL-backed storage configured via DATABASE_URL.");
   } else {
-    console.log('Using in-memory storage because no valid DATABASE_URL was found or the database is unavailable.');
+    console.log(
+      "Using in-memory storage because no valid DATABASE_URL was found or the database is unavailable.",
+    );
   }
 
   await seedDatabase();
@@ -90,10 +97,12 @@ async function startServer() {
     console.log(`  GET    /api/tasks`);
     console.log(`  GET    /api/admin/tasks`);
     console.log(`  GET    /api/admin/users`);
-    console.log(`  GET    /api/auth/me`);   
+    console.log(`  GET    /api/auth/me`);
     console.log(`  GET    /api/roles`);
     console.log(`  GET    /api/auth/profile`);
-    console.log(`  GET    /api/tasks?status=todo&priority=high&sortBy=dueDate&order=asc&search=task`);    
+    console.log(
+      `  GET    /api/tasks?status=todo&priority=high&sortBy=dueDate&order=asc&search=task`,
+    );
     console.log(`  POST   /api/auth/register`);
     console.log(`  POST   /api/auth/login`);
     console.log(`  POST   /api/tasks`);

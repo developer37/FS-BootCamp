@@ -5,6 +5,7 @@
 // decoded user payload to the request so downstream handlers can safely use it.
 
 const jwt = require('jsonwebtoken');
+require("dotenv").config();
 
 // Secret key for JWT verification. Keep this aligned with the value used when
 // issuing tokens in the auth controller so login/register flows work reliably.
