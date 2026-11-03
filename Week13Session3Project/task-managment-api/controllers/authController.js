@@ -9,7 +9,7 @@ const Role = require('../models/Role');
 require("dotenv").config();
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-this-in-production";
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "17d";
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
 
 // Basic input validation keeps malformed registration and login requests from
 // reaching the model layer or creating invalid tokens.
